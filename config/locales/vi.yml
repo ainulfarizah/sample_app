@@ -1,0 +1,5 @@
+vi:
+  currency: "€"
+  product_price: "%{price} €"
+  help: "Giúp đỡ"
+  home: "Trang chủ"

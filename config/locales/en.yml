@@ -1,0 +1,7 @@
+en:
+  title: Sample App
+  hello_world: Hello world!
+  hello_flash: Hello flash!
+  product_price: "$%{price}"
+  help: "Help"
+  home: "Home"
