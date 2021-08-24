@@ -2,21 +2,11 @@ class User < ApplicationRecord
   attr_accessor :remember_token
   before_save :downcase_email
 
-  validates :name, presence: true, length: {minimum: 6}
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true, length: {maximum: Settings.user.email.max_length}, format: {with: VALID_EMAIL_REGEX}
+  validates :email, uniqueness: true, presence: true, length: {maximum: 255}, format: {with: VALID_EMAIL_REGEX}
+  validates :password, presence: true, length: {minimum: 6}, allow_nil: true
 
   has_secure_password
-
-  # Returns the hash digest of the given string.
-  def User.digest string
-    cost = if ActiveModel::SecurePassword.min_cost
-             BCrypt::Engine::MIN_COST
-           else
-             BCrypt::Engine.cost
-           end
-    BCrypt::Password.create string, cost: cost
-  end
 
   class << self
     def new_token
