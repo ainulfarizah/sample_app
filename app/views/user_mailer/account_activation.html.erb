@@ -1,0 +1,6 @@
+<h1><%= t(:title) %></h1>
+
+<p><%= t(:welcome_to_the_sample_app) %> <%= @user.name %>, ></p>
+<p> <%= t(:link_activate_account) %> </p>
+
+<%= link_to t(:activate), edit_account_activation_url(id: @user.activation_token, email: @user.email) %>

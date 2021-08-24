@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
+  before_action :load_user, only: :show
   before_action :logged_in_user, except: %i(new show create)
   before_action :correct_user, only: %i(:edit :update)
   before_action :admin_user, only: :destroy
+  skip_before_action :verify_authenticity_token
 
   def index
     @users = User.paginate(page: params[:page])
@@ -21,10 +23,10 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save  # Handle a successful save.
-      log_in @user
-      flash[:success] = t(:welcome_to_the_sample_app)
-      redirect_to @user
+    if @user.save
+      @user.send_activation_email
+      flash[:info] = t(:info)
+      redirect_to home_url
     else
       render :new
     end
