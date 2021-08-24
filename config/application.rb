@@ -13,7 +13,7 @@ module SampleApp
 
     # Configuration for the application, engines, and railties goes here.
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
-    config.i18n.default_locale = :de
+    config.i18n.default_locale = :en
 
     #
     # These settings can be overridden in specific environments using the files
