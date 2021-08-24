@@ -3,6 +3,8 @@ class User < ApplicationRecord
   before_save :downcase_email
   before_create :create_activation_digest
 
+  has_many :microposts, dependent: :destroy
+
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :name, presence: true
   validates :email, uniqueness: true, presence: true, length: {maximum: 255}, format: {with: VALID_EMAIL_REGEX}
@@ -48,13 +50,6 @@ class User < ApplicationRecord
     update_columns activated: true, activated_at: Time.zone.now
   end
 
-  # Creates and assigns the activation token and digest.
-  def create_activation_digest
-    self.activation_token = User.new_token
-    self.activation_digest = User.digest(activation_token)
-  end
-
-  # Sends activation email.
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
   end
@@ -72,10 +67,18 @@ class User < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
+  def feed
+    Micropost.where("user_id = ?", id)
+  end
+
   private
 
   def downcase_email
     self.email.downcase!
   end
 
+  def create_activation_digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
+  end
 end
