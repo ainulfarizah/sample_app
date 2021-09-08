@@ -2,6 +2,10 @@ en:
   home: "Home"
   help: "Help"
   log in: "Log in"
+  log out: "Log Out"
   sign up: "Sign Up"
   confirmation: "Confirmation"
   create my account: "Create My Account"
+  invalid mail password combination: "Invalid mail password combination"
+  users: "Users"
+
