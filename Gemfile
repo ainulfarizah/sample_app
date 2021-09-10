@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.1'
 
+gem "will_paginate", "3.1.8"
+gem "bootstrap-will_paginate", "1.0.0"
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.4'
 # Use sqlite3 as the database for Active Record
@@ -20,7 +23,7 @@ gem 'jquery-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
-gem "bcrypt", "3.1.11"
+gem "bcrypt", "3.1.16"
 
 # gem 'mini racer', platform: :ruby
 gem 'bootstrap-sass', '3.4.1'
@@ -46,6 +49,7 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem "faker"
 end
 
 group :test do

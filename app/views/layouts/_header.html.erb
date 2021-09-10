@@ -7,25 +7,26 @@
         <li><%= link_to t(:help), help_path %></li>
 
           <% if logged_in? %>
-            <li><%= link_to t("users"), "#" %></li>
+            <li><%= link_to t(:users), users_path %></li>
               <li class="dropdown">
                 <%= link_to "#", class: "dropdown-toggle", "data-toggle": "dropdown" do %>
                   <%= t("account") %>
                   <b class="caret"></b>
                 <% end %>
                 <ul class="dropdown-menu">
-                  <li><%= link_to t("profile"), current_user %></li>
-                  <li><%= link_to t("setting"), "#" %></li>
+                  <li><%= link_to t(:profile), @current_user %></li>
+                  <li><%= link_to t(:setting), edit_user_path(current_user) %></li>
                   <li class="divider"></li>
                   <li><%= link_to t(:log_out), logout_path, method: :delete %></li>
                 </ul>
               </li>
           <% else %>
-             <li><%= link_to t("log_in"), login_path %></li>
+            <li><%= link_to t(:sign_up), signup_path %></li>
+            <li><%= link_to t(:log_in), login_path %></li>
           <% end %>
 
         <li><%= link_to "english",  locale: :en %></li>
-        <li><%= link_to "malay", locale: :my %></li>
+        <li><%= link_to "malaysia", locale: :my %></li>
       </ul>
     </nav>
   </div>
