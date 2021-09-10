@@ -1,0 +1,5 @@
+<%= t(:welcome_to_the_sample_app) %> <%= @user.name %>
+
+<%= t(:link_activate_account) %>
+
+<%= edit_account_activation_url(id: @user.activation_token, email: @user.email) %>
