@@ -3,6 +3,14 @@ class User < ApplicationRecord
   before_save :downcase_email
   before_create :create_activation_digest
 
+  has_many :microposts, dependent: :destroy
+  has_many :active_relationships, class_name: Relationship.name,
+    foreign_key: :follower_id, dependent: :destroy
+  has_many :passive_relationships, class_name: Relationship.name,
+    foreign_key: :followed_id, dependent: :destroy
+  has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
+
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :name, presence: true
   validates :email, uniqueness: true, presence: true, length: {maximum: 255}, format: {with: VALID_EMAIL_REGEX}
@@ -48,13 +56,6 @@ class User < ApplicationRecord
     update_columns activated: true, activated_at: Time.zone.now
   end
 
-  # Creates and assigns the activation token and digest.
-  def create_activation_digest
-    self.activation_token = User.new_token
-    self.activation_digest = User.digest(activation_token)
-  end
-
-  # Sends activation email.
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
   end
@@ -72,10 +73,30 @@ class User < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
+  def feed
+    Micropost.where user_id: (following_ids << id)
+  end
+
+  def follow other_user #Follows a user.
+    following << other_user
+  end
+
+  def unfollow other_user #Unfollows a user.
+    following.delete other_user
+  end
+
+  def following? other_user #Returns if the current user is following the other_user or not
+    following.include? other_user
+  end
+
   private
 
   def downcase_email
     self.email.downcase!
   end
 
+  def create_activation_digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
+  end
 end
