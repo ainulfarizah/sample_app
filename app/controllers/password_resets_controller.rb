@@ -21,7 +21,7 @@ class PasswordResetsController < ApplicationController
     if user_params[:password].empty?
       @user.errors.add(:password, t(:password_empty))
       render :edit
-    elsif @user.update user_params
+    elsif @user.update_attributes user_params
       log_in @user
       flash[:success] = t(:password_reset_success)
       redirect_to @user

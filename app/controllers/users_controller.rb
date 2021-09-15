@@ -11,8 +11,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by id: params[:id]
+    @microposts = @user.microposts.paginate(page: params[:page])
     return if @user
-
     flash.now[:danger] = t(:user_not_found)
     redirect_to root_path
   end
@@ -22,11 +22,12 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new user_params
     if @user.save
       @user.send_activation_email
+      UserMailer.account_activation(@user).deliver_now
       flash[:info] = t(:info)
-      redirect_to home_url
+      redirect_to root_url
     else
       render :new
     end
@@ -58,6 +59,13 @@ class UsersController < ApplicationController
 
   private
 
+  def load_user
+    @user = User.find_by id: params[:id]
+    return if @user
+    flash[:error] = t(:error)
+    redirect_to root_path
+  end
+
   def user_params
     params.require(:user).permit :name, :email, :password, :password_confirmation
   end
@@ -79,17 +87,5 @@ class UsersController < ApplicationController
 
   def admin_user
     redirect_to(root_url) unless current_user.admin?
-  end
-
-  def create
-    @user = User.new user_params
-    if @user.save
-      @user.send_activation_email
-      UserMailer.account_activation(@user).deliver_now
-      flash[:info] = t(:info)
-      redirect_to root_url
-    else
-      render :new
-    end
   end
 end
