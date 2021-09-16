@@ -15,6 +15,7 @@ module SampleApp
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
     config.i18n.default_locale = :en
 
+    config.action_view.embed_authenticity_token_in_remote_forms = true
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.

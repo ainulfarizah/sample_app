@@ -5,6 +5,7 @@ ruby '3.0.1'
 
 gem "will_paginate", "3.1.8"
 gem "bootstrap-will_paginate", "1.0.0"
+gem 'aws-sdk-s3', '1.46.0', require: false
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.4'
